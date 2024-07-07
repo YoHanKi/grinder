@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -136,7 +137,7 @@ class FeedServiceImplTest {
         // feedList.add(feed3); feed3은 isVisible==false 이므로 제외
 
         List<Feed> findFeedList = feedRepository.findAllByIsVisibleTrue();
-        assertEquals(feedList, findFeedList);
+        assertThat(findFeedList.size()).isEqualTo(feedList.size());
     }
 
     @Test

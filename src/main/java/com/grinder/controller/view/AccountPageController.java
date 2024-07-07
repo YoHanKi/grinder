@@ -51,6 +51,6 @@ public class AccountPageController {
 
     private String getEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return  Optional.ofNullable(authentication.getName()).orElse(null);
+        return Optional.ofNullable(authentication.getName()).orElse(null);
     }
 }

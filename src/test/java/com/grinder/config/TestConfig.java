@@ -56,4 +56,16 @@ public class TestConfig {
     public MemberQueryRepository memberQueryRepository() {
         return new MemberQueryRepository(entityManager);
     }
+    @Bean
+    public ReportQueryRepository reportQueryRepository() {
+        return new ReportQueryRepository(entityManager);
+    }
+    @Bean
+    public SearchQueryRepository searchQueryRepository() {
+        return new SearchQueryRepository(entityManager);
+    }
+    @Bean
+    public SellerInfoQueryRepository sellerInfoQueryRepository() {
+        return new SellerInfoQueryRepository(entityManager);
+    }
 }

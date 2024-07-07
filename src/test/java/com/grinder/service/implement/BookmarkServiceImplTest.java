@@ -74,4 +74,12 @@ class BookmarkServiceImplTest {
         List<Bookmark> booklist = bookmarkRepository.findAll();
         assertEquals(booklist.size(), 0);
     }
+
+    @Test
+    void existsBookmarkByEmailAndCafeId() {
+        bookmarkRepository.save(Bookmark.builder().cafe(cafe).member(member).build());
+        boolean result = bookmarkQueryRepository.existsByMemberEmailAndCafeId(member.getEmail(), cafe.getCafeId());
+
+        assertTrue(result);
+    }
 }
