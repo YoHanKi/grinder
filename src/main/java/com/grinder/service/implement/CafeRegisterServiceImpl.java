@@ -4,6 +4,7 @@ import com.grinder.domain.entity.CafeRegister;
 import com.grinder.domain.entity.Member;
 import com.grinder.repository.CafeRegisterRepository;
 import com.grinder.repository.CafeRepository;
+import com.grinder.repository.MemberRepository;
 import com.grinder.service.CafeRegisterService;
 import com.grinder.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import static com.grinder.domain.dto.CafeRegisterDTO.*;
 @Service
 @RequiredArgsConstructor
 public class CafeRegisterServiceImpl implements CafeRegisterService {
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
     private final CafeRegisterRepository cafeRegisterRepository;
 
     @Override
@@ -43,7 +44,7 @@ public class CafeRegisterServiceImpl implements CafeRegisterService {
     @Override
     @Transactional
     public String saveCafeRegister(String memberEmail, CafeRegisterRequestDTO request) {
-        Member member = memberService.findMemberByEmail(memberEmail);
+        Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         CafeRegister result = CafeRegister.builder()
             .member(member)

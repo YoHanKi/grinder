@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - redis-network
+    volumes:
+      # 디렉토리 마운트cker/설정
+        - ~/programs/doredis/data:/var/lib/redis
+
+networks:
+  redis-network:
+    driver: bridge
