@@ -68,7 +68,9 @@ public class CafeSummaryServiceImpl implements CafeSummaryService {
 
     @Transactional
     public void saveCafeSummary(String cafeId) {
-        String content = analysisCafe(cafeId).getContent();
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 카페입니다."));
+        String content = alanAPI.requestSummary(cafe.getName(), cafe.getAddress()).getContent();
+
         CafeSummary cafeSummary = CafeSummary
                 .builder()
                 .cafeId(cafeId)

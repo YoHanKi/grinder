@@ -84,6 +84,7 @@ public class CafeDTO {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class findAllWithImageAndTagResponse {
         private String cafeId;
         private String cafeName;
@@ -94,27 +95,13 @@ public class CafeDTO {
         private List<String> tagList;
 
 
-        public findAllWithImageAndTagResponse(Cafe cafe, String imageUrl, List<Tag> tagList) {
-            cafeId = cafe.getCafeId();
-            cafeName = cafe.getName();
-            cafeAddress = cafe.getAddress();
-            cafePhoneNum = cafe.getPhoneNum();
-            averageGrade = cafe.getAverageGrade();
-            cafeImageUrl = imageUrl;
-            List<String> list = new ArrayList<>();
-            for (Tag tag : tagList) {
-                list.add(tag.getTagName().getValue());
-            }
-            this.tagList = list;
-        }
-
-//        public findAllWithImageAndTagResponse(findAllWithImageResponse cafe, List<Tag> tagList) {
+//        public findAllWithImageAndTagResponse(Cafe cafe, String imageUrl, List<Tag> tagList) {
 //            cafeId = cafe.getCafeId();
-//            cafeName = cafe.getCafeName();
-//            cafeAddress = cafe.getCafeAddress().split(" ")[0] + " " + cafe.getCafeAddress().split(" ")[1];
-//            cafePhoneNum = cafe.getCafePhoneNum();
+//            cafeName = cafe.getName();
+//            cafeAddress = cafe.getAddress();
+//            cafePhoneNum = cafe.getPhoneNum();
 //            averageGrade = cafe.getAverageGrade();
-//            cafeImageUrl = cafe.cafeImageUrl;
+//            cafeImageUrl = imageUrl;
 //            List<String> list = new ArrayList<>();
 //            for (Tag tag : tagList) {
 //                list.add(tag.getTagName().getValue());

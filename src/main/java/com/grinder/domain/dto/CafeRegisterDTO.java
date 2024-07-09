@@ -10,8 +10,6 @@ import lombok.Setter;
 public class CafeRegisterDTO {
 
     @Getter
-    @Setter
-    @NoArgsConstructor
     public static class CafeRegisterRequestDTO {
 
         private String name;
@@ -27,6 +25,7 @@ public class CafeRegisterDTO {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class FindCafeRegisterDTO {
 
         private String registerId;
@@ -44,22 +43,22 @@ public class CafeRegisterDTO {
         }
     }
 
-    @Getter
-    @Setter
-    public static class SaveCafeRegisterDTO {
-
-        private String registerId;
-        private String memberId;
-        private String name;
-        private String address;
-        private String phoneNum;
-
-        public SaveCafeRegisterDTO(CafeRegister cafeRegister) {
-            this.registerId = cafeRegister.getRegisterId();
-            this.memberId = cafeRegister.getMember().getMemberId();
-            this.name = cafeRegister.getName();
-            this.address = cafeRegister.getAddress();
-            this.phoneNum = cafeRegister.getPhoneNum();
-        }
-    }
+//    @Getter
+//    @Setter
+//    public static class SaveCafeRegisterDTO {
+//
+//        private String registerId;
+//        private String memberId;
+//        private String name;
+//        private String address;
+//        private String phoneNum;
+//
+//        public SaveCafeRegisterDTO(CafeRegister cafeRegister) {
+//            this.registerId = cafeRegister.getRegisterId();
+//            this.memberId = cafeRegister.getMember().getMemberId();
+//            this.name = cafeRegister.getName();
+//            this.address = cafeRegister.getAddress();
+//            this.phoneNum = cafeRegister.getPhoneNum();
+//        }
+//    }
 }

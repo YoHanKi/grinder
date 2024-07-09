@@ -42,9 +42,9 @@ public class CafeServiceImpl implements CafeService {
 
         Cafe cafe = Cafe.builder().name(register.getName()).address(register.getAddress()).phoneNum(register.getPhoneNum()).build();
 
-        cafeRepository.save(cafe);
+        Cafe result = cafeRepository.save(cafe);
 
-        cafeSummaryService.saveCafeSummary(cafe.getCafeId());
+        cafeSummaryService.saveCafeSummary(result.getCafeId());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CafeServiceImpl implements CafeService {
     }
   
     public CafeResponseDTO getCafeInfo(String cafeId) {
-        Cafe cafe = findCafeById(cafeId);
+        Cafe cafe = cafeRepository.findById(cafeId).orElseThrow(() -> new NoSuchElementException("카페 아이디: " + cafeId + " 인 카페가 존재하지 않습니다."));
         return CafeResponseDTO.builder()
             .cafeId(cafe.getCafeId())
             .name(cafe.getName())

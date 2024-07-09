@@ -63,7 +63,6 @@ public class AnalysisTagServiceImpl implements AnalysisTagService {
     @Override
     @Transactional
     public boolean addTagList(List<String> list, AnalysisTag analysisTag) {
-
         try {
             for (String item : list) {
                 analysisTag.addTags(item);

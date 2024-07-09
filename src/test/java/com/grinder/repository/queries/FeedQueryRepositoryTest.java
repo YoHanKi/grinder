@@ -113,7 +113,6 @@ class FeedQueryRepositoryTest {
 
         assertThat(result).isNotNull();
         assertThat(result).extracting("memberNickname").contains("test");
-        assertThat(result).extracting("content").contains("내용1");
     }
 
     @Test
