@@ -77,4 +77,12 @@ class FollowServiceImplTest {
         assertTrue(result);
         assertFalse(followQueryRepository.existsByMemberEmailAndFollowEmail(follower.getEmail(), following.getEmail()));
     }
+
+    @Test
+    void existFollow() {
+        followRepository.save(Follow.builder().member(follower).following(following).build());
+        boolean result = followService.existFollow(follower.getEmail(), following.getEmail());
+
+        assertTrue(result);
+    }
 }

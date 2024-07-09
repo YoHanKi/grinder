@@ -1,10 +1,13 @@
 package com.grinder.service.implement;
 
 import com.grinder.domain.dto.SellerApplyDTO;
-import com.grinder.domain.entity.Cafe;
-import com.grinder.domain.entity.Member;
-import com.grinder.domain.entity.SellerApply;
+import com.grinder.domain.entity.*;
+import com.grinder.domain.enums.ContentType;
+import com.grinder.exception.AlreadyExistException;
 import com.grinder.repository.SellerApplyRepository;
+import com.grinder.repository.SellerInfoRepository;
+import com.grinder.service.AwsS3Service;
+import com.grinder.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,24 +19,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
 class SellerApplyServiceImplTest {
     @InjectMocks
     SellerApplyServiceImpl sellerApplyService;
-
     @Mock
     SellerApplyRepository sellerApplyRepository;
-
+    @Mock
+    SellerInfoRepository sellerInfoRepository;
+    @Mock
+    AwsS3ServiceImpl awsS3Service;
+    @Mock
+    MemberServiceImpl memberService;
+    @Mock
+    CafeServiceImpl cafeService;
     @Mock
     Pageable pageable;
 
@@ -65,5 +76,49 @@ class SellerApplyServiceImplTest {
         sellerApplyService.deleteSellerApply(apply.getApplyId());
 
         verify(sellerApplyRepository,times(1)).deleteById(apply.getApplyId());
+    }
+
+    @Test
+    void saveSellerApply_isNotEmpty() {
+        doReturn(List.of(SellerInfo.builder().sellerInfoId(1L).build())).when(sellerInfoRepository).findAllByCafe_CafeId(anyString());
+
+        assertThatThrownBy(() -> sellerApplyService.saveSellerApply("test","test", any(MultipartFile.class))).isInstanceOf(AlreadyExistException.class)
+                .hasMessage("이미 판매자가 등록된 카페입니다.");
+    }
+    @Test
+    void saveSellerApply_isPresent() {
+        doReturn(new ArrayList<SellerInfo>()).when(sellerInfoRepository).findAllByCafe_CafeId(anyString());
+        doReturn(Optional.of(SellerApply.builder().applyId("test").build())).when(sellerApplyRepository).findByMember_MemberIdAndCafe_CafeId(anyString(), anyString());
+
+        assertThatThrownBy(() -> sellerApplyService.saveSellerApply("test","test", any(MultipartFile.class))).isInstanceOf(AlreadyExistException.class)
+                .hasMessage("이미 신청한 내역이 존재합니다.");
+    }
+
+    @Test
+    void saveSellerApply() {
+        doReturn(new ArrayList<SellerInfo>()).when(sellerInfoRepository).findAllByCafe_CafeId(anyString());
+        doReturn(Optional.empty()).when(sellerApplyRepository).findByMember_MemberIdAndCafe_CafeId(anyString(), anyString());
+
+        Image image = Image.builder().imageId("imageId").imageUrl("testUrl").contentId("testId").build();
+        MultipartFile mockFile = mock(MultipartFile.class);
+        doReturn(image).when(awsS3Service).uploadSingleImageBucket(eq(null), anyString(), eq(ContentType.SELLER_APPLY));
+
+        doReturn(SellerApply.builder().applyId("testSellerId").build()).when(sellerApplyRepository).save(any(SellerApply.class));
+        doReturn(Member.builder().memberId("memId").build()).when(memberService).findMemberById(anyString());
+        doReturn(Cafe.builder().cafeId("cafId").build()).when(cafeService).findCafeById(anyString());
+
+        sellerApplyService.saveSellerApply("test", "test", eq(mockFile));
+
+        verify(sellerApplyRepository, times(1)).save(any(SellerApply.class));
+    }
+
+    @Test
+    void findSellerApply() {
+        Optional<SellerApply> sellerApply = Optional.of(SellerApply.builder().applyId("test").build());
+        doReturn(sellerApply).when(sellerApplyRepository).findById(anyString());
+
+        SellerApply result = sellerApplyService.findSellerApply(anyString());
+
+        assertThat(result).extracting("applyId").isEqualTo(sellerApply.get().getApplyId());
     }
 }

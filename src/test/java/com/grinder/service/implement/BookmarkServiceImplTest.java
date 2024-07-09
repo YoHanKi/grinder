@@ -78,7 +78,7 @@ class BookmarkServiceImplTest {
     @Test
     void existsBookmarkByEmailAndCafeId() {
         bookmarkRepository.save(Bookmark.builder().cafe(cafe).member(member).build());
-        boolean result = bookmarkQueryRepository.existsByMemberEmailAndCafeId(member.getEmail(), cafe.getCafeId());
+        boolean result = bookmarkService.existsBookmarkByEmailAndCafeId(member.getEmail(), cafe.getCafeId());
 
         assertTrue(result);
     }

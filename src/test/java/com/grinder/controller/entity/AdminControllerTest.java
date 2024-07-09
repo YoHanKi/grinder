@@ -47,7 +47,13 @@ class AdminControllerTest {
         String cafeRegisterId = "";
         for (int i = 0; i < 3; i++) {
             cafeRegisterId = UUID.randomUUID().toString();
-            registerDTOList.add(new CafeRegisterDTO.FindCafeRegisterDTO(CafeRegister.builder().registerId(cafeRegisterId).member(new Member()).phoneNum("01012345678").build()));
+            CafeRegisterDTO.FindCafeRegisterDTO temp = new CafeRegisterDTO.FindCafeRegisterDTO();
+            temp.setRegisterId(cafeRegisterId);
+            temp.setCafeName("test");
+            temp.setAddress("address");
+            temp.setNickname("name");
+            temp.setCafeName("cafe");
+            registerDTOList.add(temp);
         }
 
 

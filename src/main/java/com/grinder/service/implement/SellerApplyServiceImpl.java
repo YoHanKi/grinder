@@ -55,7 +55,7 @@ public class SellerApplyServiceImpl implements SellerApplyService {
     @Transactional
     public void saveSellerApply(String memberId, String cafeId, MultipartFile file) {
         List<SellerInfo> sellerInfoList = sellerInfoRepository.findAllByCafe_CafeId(cafeId);
-        if (sellerInfoList.size() != 0) {
+        if (!sellerInfoList.isEmpty()) {
             throw new AlreadyExistException("이미 판매자가 등록된 카페입니다.");
         }
 
