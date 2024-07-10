@@ -45,15 +45,8 @@ public class MenuServiceImpl implements MenuService {
         }
         Cafe cafe = cafeRepository.findById(request.getCafeId()).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 카페 입니다."));
 
-        boolean limit = false;
-        switch (request.getMenuIsLimited()) {
-            case "한정 메뉴" :
-                limit = true; break;
-            case "상시" :
-                break;
-            default :
-                throw new IllegalArgumentException("한정 메뉴 관련 잘못된 정보입니다.");
-        }
+        boolean limit = request.getMenuIsLimited().equals("한정 메뉴");
+
         menuRepository.save(Menu.builder()
                 .cafe(cafe)
                 .menuId(uuid)

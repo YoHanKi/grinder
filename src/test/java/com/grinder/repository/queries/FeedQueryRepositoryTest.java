@@ -100,7 +100,7 @@ class FeedQueryRepositoryTest {
 
     @Test
     void findRecentFeedWithImage() {
-        Slice<FeedDTO.FeedWithImageResponseDTO> result = feedQueryRepository.findRecentFeedWithImage("test1@test.com", Pageable.ofSize(2));
+        Slice<FeedDTO.FeedWithImageResponseDTO> result = feedQueryRepository.findRecentFeedWithImage("test1@test.com", Pageable.ofSize(3));
 
         assertThat(result).isNotNull();
         assertThat(result).extracting("memberNickname").contains("test");
@@ -117,7 +117,7 @@ class FeedQueryRepositoryTest {
 
     @Test
     void findMemberFeedWithImage() {
-        Slice<FeedDTO.FeedWithImageResponseDTO> result = feedQueryRepository.FindMemberFeedWithImage("test1@test.com","test@test.com", Pageable.ofSize(2));
+        Slice<FeedDTO.FeedWithImageResponseDTO> result = feedQueryRepository.FindMemberFeedWithImage("test1@test.com","test@test.com", Pageable.ofSize(3));
 
         assertThat(result).isNotNull();
         assertThat(result).extracting("memberNickname").contains("test");

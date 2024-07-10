@@ -63,17 +63,11 @@ public class Member extends BaseEntity{
     }
 
     public boolean delete() {
-        if (isDeleted) {
-            return false;
-        }
         isDeleted = true;
         return true;
     }
 
     public boolean recover() {
-        if (!isDeleted) {
-            return false;
-        }
         isDeleted = false;
         return true;
     }

@@ -21,9 +21,9 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService{
-    private final ImageRepository imageRepository;
     private final ImageQueryRepository imageQueryRepository;
-    private final AwsS3Service awsS3Service;
+    private final ImageRepository imageRepository;
+//    private final AwsS3Service awsS3Service;
     private final MemberRepository memberRepository;
 
     @Override
@@ -41,28 +41,28 @@ public class ImageServiceImpl implements ImageService{
         return imageRepository.findByContentIdAndContentType(contentId, contentType);
     }
 
-    @Override
-    public void saveFeedImage(String contentId, ContentType contentType, List<String> imageUrlList) {
-        for (String imageUrl : imageUrlList) {
-            imageRepository.save(
-                    Image.builder()
-                            .imageUrl(imageUrl)
-                            .contentId(contentId)
-                            .contentType(contentType)
-                            .build()
-                    );
-        }
-    }
+//    @Override
+//    public void saveFeedImage(String contentId, ContentType contentType, List<String> imageUrlList) {
+//        for (String imageUrl : imageUrlList) {
+//            imageRepository.save(
+//                    Image.builder()
+//                            .imageUrl(imageUrl)
+//                            .contentId(contentId)
+//                            .contentType(contentType)
+//                            .build()
+//                    );
+//        }
+//    }
     @Override
     public void deleteFeedImage(String contentId, ContentType contentType) {
         List<Image> ImageList = findAllImage(contentId, contentType);
-        for(Image image : ImageList){
-            try {
-                awsS3Service.deleteFile(image.getImageUrl());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        for(Image image : ImageList){
+//            try {
+//                awsS3Service.deleteFile(image.getImageUrl());
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
         imageRepository.deleteAll(ImageList);
     }
 
@@ -78,15 +78,15 @@ public class ImageServiceImpl implements ImageService{
             if (imageRepository.existsAllByContentTypeAndContentId(ContentType.CAFE, request.getCafeId())) {
                 imageRepository.deleteByContentTypeAndContentId(ContentType.CAFE, request.getCafeId());
             }
-            image = awsS3Service.uploadSingleImageBucket(request.getImage(), request.getCafeId(), ContentType.CAFE);
+//            image = awsS3Service.uploadSingleImageBucket(request.getImage(), request.getCafeId(), ContentType.CAFE);
         } else {
             Member member = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
             if (imageRepository.existsAllByContentTypeAndContentId(ContentType.MEMBER, member.getMemberId())) {
                 imageRepository.deleteByContentTypeAndContentId(ContentType.MEMBER, member.getMemberId());
             }
-            image = awsS3Service.uploadSingleImageBucket(request.getImage(), member.getMemberId(), ContentType.MEMBER);
+//            image = awsS3Service.uploadSingleImageBucket(request.getImage(), member.getMemberId(), ContentType.MEMBER);
         }
-        imageRepository.save(image);
+//        imageRepository.save(image);
         return true;
     }
 
@@ -105,11 +105,11 @@ public class ImageServiceImpl implements ImageService{
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 회원입니다."));
         Image image = imageRepository.findByContentTypeAndContentId(ContentType.MEMBER, member.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("이미 존재하지 않습니다."));
-        try {
-            awsS3Service.deleteFile(image.getImageUrl());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            awsS3Service.deleteFile(image.getImageUrl());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
         imageRepository.delete(image);
         return true;
     }

@@ -54,8 +54,9 @@ class CafeQueryRepositoryTest {
         Blacklist blacklist1 = blacklistRepository.save(Blacklist.builder().member(member).blockedMember(member2).build());
         Image image = imageRepository.save(Image.builder().contentType(ContentType.MEMBER).contentId(member.getMemberId()).imageUrl("1234").build());
         Image image1 = imageRepository.save(Image.builder().contentType(ContentType.MEMBER).contentId(member1.getMemberId()).imageUrl("1234").build());
-        Cafe cafe = cafeRepository.save(Cafe.builder().name("그라인더0").phoneNum("01012341234").address("서울시 강남구").build());
+        Cafe cafe = cafeRepository.save(Cafe.builder().cafeId("test").name("그라인더0").phoneNum("01012341234").address("서울시 강남구").averageGrade(3).build());
         Cafe cafe1 = cafeRepository.save(Cafe.builder().name("그라인더1").phoneNum("01012341234").address("서울시 강남구").build());
+        Image cafeImage = imageRepository.save(Image.builder().contentType(ContentType.CAFE).contentId(cafe.getCafeId()).imageUrl("1234").build());
         Bookmark bookmark = bookmarkRepository.save(Bookmark.builder().cafe(cafe).member(member).build());
         Feed feed = feedRepository.save(Feed.builder().cafe(cafe).member(member).content("내용").grade(5).build());
         Feed feed1 = feedRepository.save(Feed.builder().cafe(cafe).member(member1).content("내용1").grade(4).build());
@@ -89,6 +90,12 @@ class CafeQueryRepositoryTest {
     void findTop3CafesReferencedThisWeek() {
         List<CafeDTO.findAllWithImageAndTagResponse> find = cafeQueryRepository.findTop3CafesReferencedThisWeek();
 
+        assertThat(find).extracting("cafeId").contains("test");
         assertThat(find).extracting("cafeName").contains("그라인더0");
+        assertThat(find).extracting("cafeAddress").contains("서울시 강남구");
+        assertThat(find).extracting("cafePhoneNum").contains("01012341234");
+        assertThat(find).extracting("averageGrade").contains(3);
+        assertThat(find).extracting("cafeImageUrl").contains("1234");
+        assertThat(find.get(0).getTagList().size()).isEqualTo(2);
     }
 }

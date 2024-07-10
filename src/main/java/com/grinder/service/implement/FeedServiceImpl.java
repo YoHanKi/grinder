@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class FeedServiceImpl implements FeedService {
     private final CafeRepository cafeRepository;
     private final MemberService memberService;
     private final FeedQueryRepository feedQueryRepository;
-    private final AwsS3Service awsS3Service;
+//    private final AwsS3Service awsS3Service;
 
     @Override
     public Feed findFeed(String feedId) {
@@ -36,6 +37,7 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
+    @Transactional
     public Feed saveFeed(FeedDTO.FeedRequestDTO request, String memberEmail, List<MultipartFile> imageList){
         // Feed 저장
         Member member = memberService.findMemberByEmail(memberEmail);
@@ -56,11 +58,11 @@ public class FeedServiceImpl implements FeedService {
         if (imageList == null) {
             imageList = new ArrayList<>();
         }
-        for (MultipartFile image : imageList) {
-            awsS3Service.uploadSingleImageBucket(image, feed.getFeedId(), ContentType.FEED);
-        }
+//        for (MultipartFile image : imageList) {
+//            awsS3Service.uploadSingleImageBucket(image, feed.getFeedId(), ContentType.FEED);
+//        }
 
-        return feedRepository.save(feed);
+        return feed;
     }
 
     @Override
@@ -86,9 +88,9 @@ public class FeedServiceImpl implements FeedService {
         if (imageList == null) {
             imageList = new ArrayList<>();
         }
-        for (MultipartFile image : imageList) {
-            awsS3Service.uploadSingleImageBucket(image, feed.getFeedId(), ContentType.FEED);
-        }
+//        for (MultipartFile image : imageList) {
+//            awsS3Service.uploadSingleImageBucket(image, feed.getFeedId(), ContentType.FEED);
+//        }
 
         return feed;
     }
@@ -102,23 +104,21 @@ public class FeedServiceImpl implements FeedService {
 
     @Override
     public FeedDTO.FindFeedDTO findFeedForAdmin(String feedId) {
-        FeedDTO.FindFeedDTO feedDTO = feedQueryRepository.findFeed(feedId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 피드입니다."));
-        return feedDTO;
+        return feedQueryRepository.findFeed(feedId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 피드입니다."));
     }
 
-    @Override
-    public List<FeedResponseDTO> findFeedsByCafeId(String cafeId) {
-        List<Feed> feedList = feedRepository.findFeedsByCafe_CafeId(cafeId);
-
-        // 조회된 피드 리스트를 FeedResponseDTO로 변환합니다.
-        List<FeedResponseDTO> feedDTOList = new ArrayList<>();
-        for (Feed feed : feedList) {
-            FeedResponseDTO responseDTO = new FeedResponseDTO(feed);
-            feedDTOList.add(responseDTO);
-        }
-
-        return feedDTOList;
-    }
+//    public List<FeedResponseDTO> findFeedsByCafeId(String cafeId) {
+//        List<Feed> feedList = feedRepository.findFeedsByCafe_CafeId(cafeId);
+//
+//        // 조회된 피드 리스트를 FeedResponseDTO로 변환합니다.
+//        List<FeedResponseDTO> feedDTOList = new ArrayList<>();
+//        for (Feed feed : feedList) {
+//            FeedResponseDTO responseDTO = new FeedResponseDTO(feed);
+//            feedDTOList.add(responseDTO);
+//        }
+//
+//        return feedDTOList;
+//    }
 
     @Override
     public Slice<FeedDTO.FeedWithImageResponseDTO> findMyPageFeedWithImage(String connectEmail, String myPageEmail, Pageable pageable) {

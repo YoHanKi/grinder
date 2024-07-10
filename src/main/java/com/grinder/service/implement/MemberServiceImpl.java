@@ -45,8 +45,7 @@ public class MemberServiceImpl implements MemberService {
     private final SearchQueryRepository searchQueryRepository;
 
     public Member findMemberById(String memberId) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("회원 아이디: " + memberId + " 인 회원이 존재하지 않습니다."));
-        return member;
+        return memberRepository.findById(memberId).orElseThrow(() -> new NoSuchElementException("회원 아이디: " + memberId + " 인 회원이 존재하지 않습니다."));
     }
 
     @Override
@@ -62,13 +61,13 @@ public class MemberServiceImpl implements MemberService {
         return new MemberDTO.FindMemberAndImageDTO(member, image);
     }
 
-    @Transactional
-    @Override
-    public MemberDTO.FindMemberAndImageDTO findMemberAndImageByEmail(String email) {
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("회원 아이디: " + email + " 인 회원이 존재하지 않습니다."));
-        String image = imageRepository.findByContentTypeAndContentId(ContentType.MEMBER, member.getMemberId()).orElse(new Image()).getImageUrl();
-        return new MemberDTO.FindMemberAndImageDTO(member, image);
-    }
+//    @Transactional
+//    @Override
+//    public MemberDTO.FindMemberAndImageDTO findMemberAndImageByEmail(String email) {
+//        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new NoSuchElementException("회원 아이디: " + email + " 인 회원이 존재하지 않습니다."));
+//        String image = imageRepository.findByContentTypeAndContentId(ContentType.MEMBER, member.getMemberId()).orElse(new Image()).getImageUrl();
+//        return new MemberDTO.FindMemberAndImageDTO(member, image);
+//    }
 
     @Override
     @Transactional
@@ -94,7 +93,6 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public boolean recoverMember(String memberId) {
         Member member = findMemberById(memberId);
-
         return member.recover();
     }
 

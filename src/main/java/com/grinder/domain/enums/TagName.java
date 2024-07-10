@@ -30,14 +30,14 @@ public enum TagName {
 
     private final String value;
 
-    public static TagName fromString(String text) {
-        for (TagName type : TagName.values()) {
-            if (type.getValue().equals(text)) {
-                return type;
-            }
-        }
-        throw new IllegalArgumentException("No constant with text " + text + " found");
-    }
+//    public static TagName fromString(String text) {
+//        for (TagName type : TagName.values()) {
+//            if (type.getValue().equals(text)) {
+//                return type;
+//            }
+//        }
+//        throw new IllegalArgumentException("No constant with text " + text + " found");
+//    }
 }
 
 

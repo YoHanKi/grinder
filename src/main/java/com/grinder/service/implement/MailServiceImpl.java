@@ -20,25 +20,25 @@ public class MailServiceImpl implements MailService {
     public void sendEmail(String toEmail,
                           String title,
                           String content) {
-        SimpleMailMessage emailForm = createEmailForm(toEmail, title,content);
-        try {
-            emailSender.send(emailForm);
-        } catch (RuntimeException e) {
-            log.debug("MailService.sendEmail exception occur toEmail: {}, " +
-                    "title: {}, text: {}", toEmail, title, content);
-            throw new IllegalArgumentException("Unable to send email");
-        }
+//        SimpleMailMessage emailForm = createEmailForm(toEmail, title,content);
+//        try {
+//            emailSender.send(emailForm);
+//        } catch (RuntimeException e) {
+//            log.debug("MailService.sendEmail exception occur toEmail: {}, " +
+//                    "title: {}, text: {}", toEmail, title, content);
+//            throw new IllegalArgumentException("Unable to send email");
+//        }
     }
     // 발신할 이메일 데이터 세팅
-    private SimpleMailMessage createEmailForm(String toEmail,
-                                              String title,
-                                              String content) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(title);
-        message.setText(content);
-
-        return message;
-    }
+//    private SimpleMailMessage createEmailForm(String toEmail,
+//                                              String title,
+//                                              String content) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(toEmail);
+//        message.setSubject(title);
+//        message.setText(content);
+//
+//        return message;
+//    }
 
 }
