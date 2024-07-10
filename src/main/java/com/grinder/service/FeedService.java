@@ -25,7 +25,7 @@ public interface FeedService {
     //cafeId로 Feed 찾기
     //Feed findFeedByCafeId(String cafeId);
 
-    List<FeedResponseDTO> findFeedsByCafeId(String cafeId);
+//    List<FeedResponseDTO> findFeedsByCafeId(String cafeId);
 
     Slice<FeedDTO.FeedWithImageResponseDTO> findMyPageFeedWithImage(String connectEmail, String myPageEmail, Pageable pageable);
     Slice<FeedDTO.FeedWithImageResponseDTO> findCafeFeedWithImage(String connectEmail, String cafeId, Pageable pageable);

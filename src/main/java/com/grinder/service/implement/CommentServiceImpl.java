@@ -69,7 +69,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO.FindCommentDTO findCommentForAdmin(String commentId) {
-        CommentDTO.FindCommentDTO commentDTO = commentQueryRepository.findComment(commentId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 댓글입니다."));
-        return commentDTO;
+        return commentQueryRepository.findComment(commentId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 댓글입니다."));
     }
 }

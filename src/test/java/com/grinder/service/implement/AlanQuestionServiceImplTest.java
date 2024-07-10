@@ -32,12 +32,16 @@ class AlanQuestionServiceImplTest {
     void anyQuestion() {
         AlanDTO.AlanResponse question = new AlanDTO.AlanResponse();
         question.setContent("Test answer");
+        question.setActionSpeak("Speak");
+        question.setActionName("Name");
 
         doReturn(question).when(alanAPI).anyQuestion(any(String.class));
 
         AlanDTO.AlanResponse result = alanQuestionService.anyQuestion("test question");
 
         assertThat(result).extracting("content").isEqualTo("Test answer");
+        assertThat(result).extracting("actionName").isEqualTo("Name");
+        assertThat(result).extracting("actionSpeak").isEqualTo("Speak");
     }
 
     @Test

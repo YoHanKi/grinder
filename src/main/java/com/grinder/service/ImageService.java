@@ -12,7 +12,7 @@ public interface ImageService {
     // 해당 컨텐츠(피드)에서 사용한 모든 이미지 찾기
     List<Image> findAllImage(String contentId, ContentType contentType);
     // 해당 컨텐츠(피드)에서 사용할 이미지 모두 저장
-    void saveFeedImage(String contentId, ContentType contentType, List<String> imageUrlList);
+//    void saveFeedImage(String contentId, ContentType contentType, List<String> imageUrlList);
     // 해당 컨텐츠(피드)에서 사용한 이미지 모두 삭제
     void deleteFeedImage(String contentId, ContentType contentType);
     String findImageUrlByContentId(String id);

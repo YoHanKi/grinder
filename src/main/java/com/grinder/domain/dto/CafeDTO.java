@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CafeDTO {
-    @Data
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class CafeRequestDTO {
-        private String cafeId;
-        private String name;
-        private String address;
-        private String phoneNum;
-    }
+//    @Data
+//    @Builder
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class CafeRequestDTO {
+//        private String cafeId;
+//        private String name;
+//        private String address;
+//        private String phoneNum;
+//    }
 
     @Data
     @Builder

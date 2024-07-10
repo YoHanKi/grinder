@@ -49,7 +49,7 @@ public class MenuDTO {
             menuUpdate = menu.getUpdatedAt().format(formatter);
             menuVolume = menu.getVolume();
             menuAllergy = menu.getAllergy();
-            menuDetails = menu.getAllergy();
+            menuDetails = menu.getDetails();
             if (menu.getIsLimited()) menuIsLimited = "한정 메뉴";
             else menuIsLimited = "상시";
             menuType = menu.getMenuType().toString();
