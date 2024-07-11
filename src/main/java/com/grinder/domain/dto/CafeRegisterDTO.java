@@ -6,10 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
+
 public class CafeRegisterDTO {
 
     @Getter
+    @NoArgsConstructor
     public static class CafeRegisterRequestDTO {
 
         private String name;

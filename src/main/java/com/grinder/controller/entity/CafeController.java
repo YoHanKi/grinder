@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class CafeController {
 
     private final CafeService cafeService;
-    private final CafeRegisterService cafeRegisterService;
 
     @GetMapping("/search-cafe")
     public ResponseEntity<List<CafeResponseDTO>> searchCafes(@RequestParam String query) {

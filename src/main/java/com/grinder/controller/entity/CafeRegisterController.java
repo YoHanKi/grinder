@@ -19,7 +19,7 @@ public class CafeRegisterController {
 
     @PostMapping("/newcafe")
     public ResponseEntity<SuccessResult> addCafeRegister(Authentication authentication, @RequestBody CafeRegisterRequestDTO request) {
-        if(authentication == null)
+        if(authentication.isAuthenticated())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new SuccessResult("NULL", "auth is null"));
         String memberEmail = authentication.getName();
         String registerId = cafeRegisterService.saveCafeRegister(memberEmail, request);

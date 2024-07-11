@@ -24,11 +24,8 @@ public class ReportDTO {
             this.nickname = report.getMember().getNickname();
             this.contentId = report.getContentId();
             this.contentType = report.getContentType();
-            if (comment.getContent().length() <= 65) {
-                this.content = comment.getContent();
-            } else {
-                this.content = comment.getContent().substring(0, 65) + "...";
-            }
+            this.content = comment.getContent();
+
         }
 
         public FindReportDTO(Report report, Feed feed) {
@@ -36,11 +33,7 @@ public class ReportDTO {
             this.nickname = report.getMember().getNickname();
             this.contentId = report.getContentId();
             this.contentType = report.getContentType();
-            if (feed.getContent().length() <= 65) {
-                this.content = feed.getContent();
-            } else {
-                this.content = feed.getContent().substring(0, 65) + "...";
-            }
+            this.content = feed.getContent();
         }
     }
 }

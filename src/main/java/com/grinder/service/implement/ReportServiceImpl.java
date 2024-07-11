@@ -126,8 +126,6 @@ public class ReportServiceImpl implements ReportService {
             if (commentRepository.existsById(contentId)) {
                 builder.contentType(ContentType.COMMENT);
             } else builder.contentType(ContentType.FEED);
-
-
             reportRepository.save(builder.build());
         } catch (Exception e) {
             return false;

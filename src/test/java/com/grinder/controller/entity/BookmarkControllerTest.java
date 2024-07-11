@@ -1,6 +1,8 @@
 package com.grinder.controller.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grinder.domain.dto.BookmarkDTO;
+import com.grinder.domain.dto.SuccessResult;
 import com.grinder.service.implement.BookmarkServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,7 @@ class BookmarkControllerTest {
     @Test
     void findAllBookmarksSlice() throws Exception {
         // 샘플 데이터 준비
+        BookmarkDTO test = new BookmarkDTO();
         List<BookmarkDTO.findAllResponse> sampleData = new ArrayList<>();
         BookmarkDTO.findAllResponse bookmark = new BookmarkDTO.findAllResponse();
         bookmark.setCafeName("스타벅스");
@@ -65,7 +68,7 @@ class BookmarkControllerTest {
         Slice<BookmarkDTO.findAllResponse> expectedSlice = new PageImpl<>(sampleData, pageable, sampleData.size());
 
         // Mockito를 사용하여 서비스 메서드가 Slice를 반환하도록 설정
-        Mockito.when(bookmarkService.findAllBookmarksSlice(any(String.class), any(Pageable.class)))
+        Mockito.when(bookmarkService.findAllBookmarksSlice(anyString(), any(Pageable.class)))
                 .thenReturn(expectedSlice);
 
         // API 호출
@@ -75,6 +78,42 @@ class BookmarkControllerTest {
                 .principal(authentication));
 
         // 응답 검증
-        resultActions.andExpect(status().isOk()).andDo(print());
+        resultActions.andExpect(status().isOk()).andExpect(content().json(new ObjectMapper().writeValueAsString(sampleData))).andDo(print());
+    }
+
+    @Test
+    void isBookmarked() throws Exception {
+        // Mockito를 사용하여 서비스 메서드가 true를 반환하도록 설정
+        when(bookmarkService.existsBookmarkByEmailAndCafeId(anyString(), anyString())).thenReturn(true);
+
+        // API 호출
+        mockMvc.perform(get("/api/bookmark/{cafeId}", "testCafeId")
+                        .principal(authentication))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+    }
+
+    @Test
+    void addBookmark() throws Exception {
+        // Mockito를 사용하여 서비스 메서드가 true를 반환하도록 설정
+        when(bookmarkService.addBookmark(anyString(), anyString())).thenReturn(true);
+
+        // API 호출
+        mockMvc.perform(post("/api/bookmark/{cafeId}", "testCafeId")
+                        .principal(authentication))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Add Success", "추가되었습니다."))));
+    }
+
+    @Test
+    void deleteBookmark() throws Exception {
+        // Mockito를 사용하여 서비스 메서드가 true를 반환하도록 설정
+        when(bookmarkService.deleteBookmark(anyString(), anyString())).thenReturn(true);
+
+        // API 호출
+        mockMvc.perform(delete("/api/bookmark/{cafeId}", "testCafeId")
+                        .principal(authentication))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Delete Success", "삭제되었습니다."))));
     }
 }

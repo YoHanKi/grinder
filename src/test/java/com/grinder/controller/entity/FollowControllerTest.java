@@ -1,6 +1,8 @@
 package com.grinder.controller.entity;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grinder.domain.dto.FollowDTO;
+import com.grinder.domain.dto.SuccessResult;
 import com.grinder.service.implement.FollowServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,9 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
@@ -80,5 +84,53 @@ class FollowControllerTest {
 
         // 응답 검증
         resultActions.andExpect(status().isOk()).andDo(print());
+    }
+
+    @Test
+    void findAllFollowerSlice() throws Exception {
+        // 테스트 데이터 준비
+        List<FollowDTO.findAllFollowerResponse> sampleData = new ArrayList<>();
+        FollowDTO.findAllFollowerResponse follower = new FollowDTO.findAllFollowerResponse();
+        follower.setFollowEmail("test3@test.com");
+        sampleData.add(follower);
+
+        // Pageable 인스턴스 생성
+        Pageable pageable = PageRequest.of(0, 10);
+
+        // PageImpl을 사용하여 Slice 반환 모방
+        Slice<FollowDTO.findAllFollowerResponse> expectedSlice = new PageImpl<>(sampleData, pageable, sampleData.size());
+
+        // Mockito를 사용하여 서비스 메서드가 Slice를 반환하도록 설정
+        Mockito.when(followService.findAllFollowerSlice(any(String.class), any(Pageable.class)))
+                .thenReturn(expectedSlice);
+
+        // API 호출
+        ResultActions resultActions = mockMvc.perform(get("/api/follower")
+                .param("page", "0")
+                .param("size", "10")
+                .principal(authentication));
+
+        // 응답 검증
+        resultActions.andExpect(status().isOk());
+    }
+
+    @Test
+    void addFollow() throws Exception {
+        when(followService.addFollow(anyString(), anyString())).thenReturn(true);
+
+        mockMvc.perform(post("/api/follow/{email}", "follow@test.com")
+                        .principal(authentication))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Create Success", "추가되었습니다."))));
+    }
+
+    @Test
+    void deleteFollow() throws Exception {
+        when(followService.deleteFollow(anyString(), anyString())).thenReturn(true);
+
+        mockMvc.perform(delete("/api/follow/{email}", "follow@test.com")
+                        .principal(authentication))
+                .andExpect(status().isOk())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Delete Success", "삭제되었습니다."))));
     }
 }

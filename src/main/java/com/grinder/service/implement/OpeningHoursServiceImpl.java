@@ -43,8 +43,6 @@ public class OpeningHoursServiceImpl implements OpeningHoursService {
                 if (!request.getIsHoliday()) {
                     opening.setOpenTime(request.getOpenTime());
                     opening.setCloseTime(request.getCloseTime());
-                } else {
-                    opening.setIsHoliday(request.getIsHoliday());
                 }
             }
         }

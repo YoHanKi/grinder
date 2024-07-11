@@ -43,6 +43,7 @@ public class AnalysisTagServiceImpl implements AnalysisTagService {
         }
     }
 
+    @Override
     @Transactional
     public AnalysisTag findByEmail(String email) {
         AnalysisTag analysisTag = null;

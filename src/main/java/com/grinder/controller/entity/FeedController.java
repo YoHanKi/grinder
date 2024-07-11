@@ -39,7 +39,7 @@ public class FeedController {
         }
     }
 
-    @PutMapping("/{feed_id}")
+    @PostMapping("/{feed_id}")
     public ResponseEntity<SuccessResult> updateFeed(
             @PathVariable String feed_id,
             @ModelAttribute FeedDTO.FeedRequestDTO request,

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 public class HeartDTO {
     @Data
-    @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class HeartRequestDTO {

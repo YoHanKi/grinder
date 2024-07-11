@@ -2,9 +2,11 @@ package com.grinder.domain.dto;
 
 import com.grinder.domain.entity.Bookmark;
 import com.grinder.domain.entity.SellerInfo;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
+@Generated
 public class SellerInfoDTO {
 
     @Getter

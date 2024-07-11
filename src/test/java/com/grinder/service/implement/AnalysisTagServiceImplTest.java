@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,5 +83,12 @@ class AnalysisTagServiceImplTest {
         doReturn(Optional.empty()).when(memberRepository).findByEmail(any(String.class));
 
         assertThatThrownBy(() -> analysisTagService.findByEmail("test")).isInstanceOf(IllegalArgumentException.class).hasMessage("존재하지 않는 회원입니다.");
+    }
+
+    @Test
+    void addTagList() {
+        boolean result = analysisTagService.addTagList(new ArrayList<>(), AnalysisTag.builder().tagList("tag").build());
+
+        assertThat(result).isTrue();
     }
 }
