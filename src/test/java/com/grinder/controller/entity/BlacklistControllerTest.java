@@ -2,6 +2,7 @@ package com.grinder.controller.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grinder.domain.dto.BlacklistDTO;
+import com.grinder.domain.dto.SuccessResult;
 import com.grinder.service.implement.BlacklistServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +56,7 @@ class BlacklistControllerTest {
 
     }
 
+
     @Test
     void findAllBlacklist() throws Exception {
         List<BlacklistDTO.findAllResponse> expectedResponse = new ArrayList<>();
@@ -62,12 +64,35 @@ class BlacklistControllerTest {
         thing.setBlockedEmail("test@example.com");
         expectedResponse.add(thing);
 
-        Mockito.doReturn(expectedResponse).
-        when(blacklistService).findAllBlacklist(any(String.class));
+        Mockito.doReturn(expectedResponse)
+                .when(blacklistService).findAllBlacklist(anyString());
 
         mockMvc.perform(get("/api/blacklist")
                         .principal(authentication))
                 .andExpect(status().isOk())
                 .andExpect(content().json(new ObjectMapper().writeValueAsString(expectedResponse)));
+    }
+
+    @Test
+    void addBlacklist() throws Exception {
+        BlacklistDTO.AddRequest addRequest = new BlacklistDTO.AddRequest();
+        addRequest.setBlockedMemberEmail("blocked@example.com");
+
+        when(blacklistService.addBlacklist(any(BlacklistDTO.AddRequest.class), anyString())).thenReturn(true);
+
+        mockMvc.perform(post("/api/blacklist/{email}", "blocked@example.com")
+                        .principal(authentication))
+                .andExpect(status().isCreated())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Add Success", "추가되었습니다."))));
+    }
+
+    @Test
+    void deleteBlacklist() throws Exception {
+        when(blacklistService.deleteBlacklist(anyLong(), anyString())).thenReturn(true);
+
+        mockMvc.perform(delete("/api/blacklist/{id}", 1L)
+                        .principal(authentication))
+                .andExpect(status().isOk())
+                .andExpect(content().json(new ObjectMapper().writeValueAsString(new SuccessResult("Delete Success", "삭제되었습니다."))));
     }
 }

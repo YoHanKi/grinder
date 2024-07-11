@@ -54,7 +54,7 @@ class SellerApplyServiceImplTest {
         //given
         List<SellerApply> sellerApplyList = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sellerApplyList.add(SellerApply.builder().member(Member.builder().nickname("membername"+i).build()).cafe(Cafe.builder().name("new cafe"+i).address("new address"+i).phoneNum("0109534246"+i).build()).build());
+            sellerApplyList.add(SellerApply.builder().applyId("apply" +i).member(Member.builder().memberId("testid"+i).nickname("membername"+i).build()).cafe(Cafe.builder().cafeId("cafeId"+i).name("name"+i).address("new address"+i).phoneNum("0109534246"+i).build()).regImageUrl("url"+i).build());
         }
 
         doReturn(new PageImpl<>(sellerApplyList, pageable, 3)).when(sellerApplyRepository).findAll(any(Pageable.class));
@@ -64,6 +64,13 @@ class SellerApplyServiceImplTest {
 
         //then
         assertThat(sellerApplyDTOSlice.getContent().size()).isEqualTo(3);
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("applyId").contains("apply0");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("memberId").contains("testid0");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("nickname").contains("membername0");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("cafeId").contains("cafeId0");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("cafeName").contains("name0");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("phoneNum").contains("01095342460");
+        assertThat(sellerApplyDTOSlice.getContent()).extracting("regImageUrl").contains("url0");
     }
 
     @DisplayName("판매자 신청 내역 삭제")

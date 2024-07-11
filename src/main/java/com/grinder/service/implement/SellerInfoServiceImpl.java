@@ -26,7 +26,6 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     private final SellerInfoQueryRepository sellerInfoQueryRepository;
     private final CafeRepository cafeRepository;
     private final MemberRepository memberRepository;
-    private final ImageQueryRepository imageQueryRepository;
     private final ImageService imageService;
     private final MemberService memberService;
 
@@ -35,7 +34,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     public void saveSellerInfo(String applyId) {
         SellerApply sellerApply = sellerApplyService.findSellerApply(applyId);
         List<SellerInfo> sellerInfoList = findSellerInfoByCafeId(sellerApply.getCafe().getCafeId());
-        if (sellerInfoList.size() != 0) {
+        if (!sellerInfoList.isEmpty()) {
             throw new AlreadyExistException("이미 판매자가 등록된 카페입니다.");
         }
         sellerInfoRepository.save(SellerInfo
@@ -60,8 +59,7 @@ public class SellerInfoServiceImpl implements SellerInfoService {
     @Override
     @Transactional
     public void deleteSellerInfo(Long sellerInfoId) {
-        SellerInfo sellerInfo = findSellerInfoById(sellerInfoId);
-        sellerInfoRepository.delete(sellerInfo);
+        sellerInfoRepository.delete(findSellerInfoById(sellerInfoId));
     }
 
     @Override

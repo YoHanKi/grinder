@@ -1,7 +1,6 @@
 package com.grinder.service;
 
 import com.grinder.domain.dto.FeedDTO;
-import com.grinder.domain.dto.FeedDTO.FeedResponseDTO;
 import com.grinder.domain.entity.Feed;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

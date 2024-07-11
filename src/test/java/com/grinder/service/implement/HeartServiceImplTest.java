@@ -37,9 +37,9 @@ class HeartServiceImplTest {
     private Heart feedHeart;
     @BeforeEach
     void setUp() {
-        member = Member.builder().email("member1@example.com").nickname("user1").password("password1").role(Role.MEMBER).phoneNum("1234567890").build();
-        cafe = Cafe.builder().name("Cafe A").address("123 Main St, City A").phoneNum("1112223333").averageGrade(4).build();
-        feed = Feed.builder().member(member).cafe(cafe).content("Great coffee and atmosphere!").isVisible(true).grade(5).build();
+        member = Member.builder().memberId("testmemberId").email("member1@example.com").nickname("user1").password("password1").role(Role.MEMBER).phoneNum("1234567890").build();
+        cafe = Cafe.builder().cafeId("testcafeId").name("Cafe A").address("123 Main St, City A").phoneNum("1112223333").averageGrade(4).build();
+        feed = Feed.builder().feedId("testfeedId").member(member).cafe(cafe).content("Great coffee and atmosphere!").isVisible(true).grade(5).build();
         comment = Comment.builder().commentId("testId").member(member).feed(feed).content("good").build();
         cComment = Comment.builder().commentId("testId").parentComment(comment).member(member).feed(feed).content("good").build();
         feedHeart = Heart.builder().heartId("heartId").member(member).contentType(ContentType.FEED).contentId(feed.getFeedId()).build();

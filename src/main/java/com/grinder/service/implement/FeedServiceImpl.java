@@ -1,7 +1,6 @@
 package com.grinder.service.implement;
 
 import com.grinder.domain.dto.FeedDTO;
-import com.grinder.domain.dto.FeedDTO.FeedResponseDTO;
 import com.grinder.domain.entity.*;
 import com.grinder.domain.enums.ContentType;
 import com.grinder.repository.CafeRepository;
