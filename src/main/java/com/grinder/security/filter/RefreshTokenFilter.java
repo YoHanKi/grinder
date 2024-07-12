@@ -122,7 +122,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
         return cookie;
     }
 
-    private void deleteCookie(String refresh, HttpServletRequest request, HttpServletResponse response) {
+    protected void deleteCookie(String refresh, HttpServletRequest request, HttpServletResponse response) {
         //로그아웃 진행
         //Refresh 토큰 DB에서 제거
         refreshRepository.deleteByRefresh(refresh);
@@ -158,7 +158,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
         return null;
     }
 
-    private String cutOffBearer(String accessToken) {
+    protected String cutOffBearer(String accessToken) {
         if(accessToken == null||accessToken.length() < 8){
             throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.UNACCEPT);
         }

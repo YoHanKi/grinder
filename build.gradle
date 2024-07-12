@@ -81,6 +81,7 @@ dependencies {
 	//elasticsearch
 	implementation 'org.springframework.data:spring-data-elasticsearch'
 
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.0'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 }
 

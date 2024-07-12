@@ -34,15 +34,15 @@ public class OpeningHoursServiceImpl implements OpeningHoursService {
                         .isHoliday(request.getIsHoliday());
 
                 if (!request.getIsHoliday()) {
-                    builder.openTime(request.getOpenTime())
-                            .closeTime(request.getCloseTime());
+                    builder.openTime(request.parseOpenTime())
+                            .closeTime(request.parseCloseTime());
                 }
                 openingHoursRepository.save(builder.build());
             } else {
                 //수정
                 if (!request.getIsHoliday()) {
-                    opening.setOpenTime(request.getOpenTime());
-                    opening.setCloseTime(request.getCloseTime());
+                    opening.setOpenTime(request.parseOpenTime());
+                    opening.setCloseTime(request.parseCloseTime());
                 }
             }
         }
@@ -56,8 +56,8 @@ public class OpeningHoursServiceImpl implements OpeningHoursService {
                 OpeningHours opening = openingHoursRepository.findByWeekdayAndCafeId(
                         cafeId, Weekday.valueOf(request.getDay().toUpperCase()))
                         .orElseThrow(() -> new EntityNotFoundException("해당 날짜와 카페 정보가 올바르지 않습니다."));
-                opening.setOpenTime(request.getOpenTime());
-                opening.setCloseTime(request.getCloseTime());
+                opening.setOpenTime(request.parseOpenTime());
+                opening.setCloseTime(request.parseCloseTime());
             } else {
                 OpeningHours opening = openingHoursRepository.findByWeekdayAndCafeId(
                                 cafeId, Weekday.valueOf(request.getDay().toUpperCase()))

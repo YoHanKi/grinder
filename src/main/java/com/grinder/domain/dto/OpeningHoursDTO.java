@@ -1,5 +1,6 @@
 package com.grinder.domain.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,13 +14,14 @@ public class OpeningHoursDTO {
     @Getter
     @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class saveOpeningRequest {
         private String day;
         private String openTime;
         private String closeTime;
         private Boolean isHoliday;
 
-        public LocalTime getOpenTime() {
+        public LocalTime parseOpenTime() {
             if (isHoliday) {
                 return null; // 또는 특정 기본값
             }
@@ -30,7 +32,7 @@ public class OpeningHoursDTO {
             }
         }
 
-        public LocalTime getCloseTime() {
+        public LocalTime parseCloseTime() {
             if (isHoliday) {
                 return null; // 또는 특정 기본값
             }
