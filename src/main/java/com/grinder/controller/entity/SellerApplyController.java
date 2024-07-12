@@ -10,8 +10,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 import static com.grinder.domain.dto.SellerApplyDTO.*;
 
@@ -24,11 +27,15 @@ public class SellerApplyController {
 
     @PostMapping("/{cafeId}")
     public ResponseEntity<SuccessResult> saveSellerApply(@PathVariable String cafeId, @RequestPart(value = "file")MultipartFile file, Authentication authentication) {
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        String memberId = userDetails.getMemberId();
+        String memberId = getEmail();
 
         sellerApplyService.saveSellerApply(memberId, cafeId, file);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResult("Create seller apply", "판매자 신청이 완료되었습니다."));
+    }
+
+    private String getEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return  Optional.ofNullable(authentication.getName()).orElse(null);
     }
 }

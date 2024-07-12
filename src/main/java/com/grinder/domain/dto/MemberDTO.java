@@ -45,6 +45,7 @@ public class MemberDTO {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class FindMemberAndImageDTO {
 
         private String memberId;

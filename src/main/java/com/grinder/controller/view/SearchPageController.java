@@ -12,6 +12,6 @@ public class SearchPageController {
     public String viewSearchPage(@RequestParam String category, @RequestParam String query, Model model) {
         model.addAttribute("query", query);
         model.addAttribute("category", category);
-        return "search";
+        return "searchPage";
     }
 }
